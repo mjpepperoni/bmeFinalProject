@@ -1,5 +1,7 @@
+# Matthew Pellioni Biomedical Data Science Final Project
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 import plotly.express as px
 
 from sklearn.preprocessing import StandardScaler
@@ -117,8 +119,20 @@ if len(selected_features) < 2:
 st.subheader("Dataset Overview")
 
 st.write(
+    "Dataset: University of California, Irvine (UCI) Parkinson’s Telemonitoring Dataset\n\n"
+    "This dataset is publicly available from the UCI Machine Learning Repository. "
+    "It contains biomedical voice measurements and clinical severity scores collected from Parkinson’s disease patients. "
+    "The data was gathered using remote telemonitoring, meaning patients recorded voice samples outside of a clinical setting."
+)
+
+st.write(
     "Each row in the dataset is a Parkinson's telemonitoring voice recording. "
     "The dataset includes clinical severity scores such as UPDRS and voice measurements such as jitter, shimmer, NHR, and HNR."
+)
+
+st.write(
+    "Each row represents a single voice recording, not a unique patient, "
+    "meaning that some patients appear multiple times in the dataset."
 )
 
 st.write(
