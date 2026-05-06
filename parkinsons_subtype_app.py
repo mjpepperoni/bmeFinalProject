@@ -261,27 +261,35 @@ st.subheader("What Features Define the Clusters?")
 
 st.write(
     "In clustering there's no true model feature importance like there is in supervised prediction. "
-    "Here, feature importance is estimated by how much the cluster averages differ from each other. "
+    "Here, feature importance is estimated by how much the cluster averages differ from each other."
+)
+st.write(
+    "The values are standardized so features on different scales, such as age and jitter, can be compared more fairly. "
     "Features with larger differences across clusters are more useful for describing the discovered groups."
 )
+
+scaled_df = pd.DataFrame(X_scaled, columns = selected_features)
+scaled_df["cluster"] = plot_df["cluster"].values
+
+scaled_summary_df = scaled_df.groupby("cluster")[selected_features].mean().reset_index()
 
 importance_rows = []
 
 for feature in selected_features:
-    feature_means = summary_df[feature]
+    feature_means = scaled_summary_df[feature]
     importance = feature_means.max() - feature_means.min()
 
     importance_rows.append({
         "feature" : feature,
-        "cluster_mean_range" : importance
+        "standardized_cluster_mean_range" : importance
     })
 
 importance_df = pd.DataFrame(importance_rows)
-importance_df = importance_df.sort_values("cluster_mean_range", ascending = False)
+importance_df = importance_df.sort_values("standardized_cluster_mean_range", ascending = False)
 
 importance_fig = px.bar(
     importance_df,
-    x = "cluster_mean_range",
+    x = "standardized_cluster_mean_range",
     y = "feature",
     orientation = "h",
     title = "Features That Differ Most Across Clusters"
